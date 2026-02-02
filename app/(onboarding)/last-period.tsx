@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, DateData } from 'react-native-calendars';
-import { format, subDays } from 'date-fns';
+import { format, subDays, parseISO } from 'date-fns';
 import { Button } from '../../src/components/common';
 import { useCycleStore } from '../../src/store/cycleStore';
 import { theme } from '../../src/constants/colors';
@@ -72,7 +72,7 @@ export default function LastPeriodScreen() {
           <View style={styles.selectedInfo}>
             <Text style={styles.selectedLabel}>Selected date:</Text>
             <Text style={styles.selectedDate}>
-              {format(new Date(selectedDate), 'MMMM d, yyyy')}
+              {format(parseISO(selectedDate), 'MMMM d, yyyy')}
             </Text>
           </View>
         )}

@@ -18,12 +18,12 @@ export default function WelcomeScreen() {
           </View>
 
           <Text style={styles.title}>Bloom</Text>
-          <Text style={styles.subtitle}>Your cycle, simplified</Text>
+          <Text style={styles.subtitle}>Privacy-first Period Tracker</Text>
 
           <View style={styles.features}>
             <FeatureItem text="Track your menstrual cycle" />
-            <FeatureItem text="Predict future periods" />
             <FeatureItem text="Know your ovulation days" />
+            <FeatureItem text="100% private, your data is NEVER collected or shared" />
           </View>
         </View>
 
