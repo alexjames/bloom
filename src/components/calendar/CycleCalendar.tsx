@@ -2,21 +2,22 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { format, parseISO, eachDayOfInterval } from 'date-fns';
-import { useCycleStore } from '../../store/cycleStore';
+import { useCycleStore, useEffectiveCycleStart } from '../../store/cycleStore';
 import { generateCyclePredictions } from '../../utils/cycleCalculator';
 import { theme } from '../../constants/colors';
 
 export function CycleCalendar() {
   const settings = useCycleStore((state) => state.settings);
+  const { effectiveDate } = useEffectiveCycleStart();
 
   const markedDates = useMemo(() => {
-    if (!settings.lastPeriodStart) return {};
+    if (!effectiveDate) return {};
 
     const marks: { [date: string]: any } = {};
 
     // Generate 6 cycles worth of predictions
     const predictions = generateCyclePredictions(
-      settings.lastPeriodStart,
+      effectiveDate,
       settings.averageCycleLength,
       settings.averagePeriodLength,
       6
@@ -24,11 +25,11 @@ export function CycleCalendar() {
 
     // Also mark the current/past period
     const currentPeriodDays = eachDayOfInterval({
-      start: parseISO(settings.lastPeriodStart),
+      start: parseISO(effectiveDate),
       end: parseISO(
         format(
           new Date(
-            parseISO(settings.lastPeriodStart).getTime() +
+            parseISO(effectiveDate).getTime() +
               (settings.averagePeriodLength - 1) * 24 * 60 * 60 * 1000
           ),
           'yyyy-MM-dd'
@@ -137,7 +138,7 @@ export function CycleCalendar() {
     }
 
     return marks;
-  }, [settings]);
+  }, [effectiveDate, settings.averageCycleLength, settings.averagePeriodLength]);
 
   const calendarTheme = {
     backgroundColor: 'transparent',

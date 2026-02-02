@@ -1,16 +1,36 @@
+import { useState } from 'react';
 import { ScrollView, Text, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   CurrentCycleCard,
+  CycleConfirmModal,
   LogPeriodCard,
   NextPeriodCard,
   OvulationCard,
   UpcomingCyclesCard,
 } from '../../src/components/home';
 import { theme } from '../../src/constants/colors';
+import { useCycleStore, useEffectiveCycleStart } from '../../src/store/cycleStore';
 
 export default function HomeScreen() {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const { effectiveDate, shouldShowPrompt } = useEffectiveCycleStart();
+  const setPromptShown = useCycleStore((state) => state.setPromptShown);
+
+  const handleConfirmPeriod = () => {
+    if (effectiveDate) {
+      setPromptShown(effectiveDate);
+    }
+  };
+
+  const handleDenyPeriod = () => {
+    if (effectiveDate) {
+      setPromptShown(effectiveDate);
+    }
+    setShowDatePicker(true);
+  };
+
   return (
     <LinearGradient
       colors={[theme.colors.pink[50], theme.colors.neutral.white]}
@@ -42,10 +62,19 @@ export default function HomeScreen() {
 
             <UpcomingCyclesCard />
 
-            <LogPeriodCard />
+            <LogPeriodCard showDatePickerInitially={showDatePicker} onDatePickerClose={() => setShowDatePicker(false)} />
           </View>
         </ScrollView>
       </SafeAreaView>
+
+      {effectiveDate && (
+        <CycleConfirmModal
+          visible={shouldShowPrompt}
+          predictedDate={effectiveDate}
+          onConfirm={handleConfirmPeriod}
+          onDeny={handleDenyPeriod}
+        />
+      )}
     </LinearGradient>
   );
 }

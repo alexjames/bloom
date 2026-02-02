@@ -3,16 +3,17 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Card } from '../common';
 import { theme } from '../../constants/colors';
 import { generateCyclePredictions, formatDateRange, formatDate } from '../../utils/cycleCalculator';
-import { useCycleStore } from '../../store/cycleStore';
+import { useCycleStore, useEffectiveCycleStart } from '../../store/cycleStore';
 import { PredictedCycle } from '../../types/cycle';
 
 export function UpcomingCyclesCard() {
   const settings = useCycleStore((state) => state.settings);
+  const { effectiveDate } = useEffectiveCycleStart();
 
-  if (!settings.lastPeriodStart) return null;
+  if (!effectiveDate) return null;
 
   const predictions = generateCyclePredictions(
-    settings.lastPeriodStart,
+    effectiveDate,
     settings.averageCycleLength,
     settings.averagePeriodLength,
     3

@@ -69,6 +69,28 @@ export function getCurrentCycleDay(lastPeriodStart: string): number {
   return differenceInDays(today, start) + 1;
 }
 
+export function getEffectiveLastPeriodStart(
+  lastPeriodStart: string,
+  cycleLength: number
+): { date: string; rolledOver: boolean; cyclesPassed: number } {
+  const start = parseISO(lastPeriodStart);
+  const today = new Date();
+  const daysSinceStart = differenceInDays(today, start);
+
+  if (daysSinceStart < cycleLength) {
+    return { date: lastPeriodStart, rolledOver: false, cyclesPassed: 0 };
+  }
+
+  const cyclesPassed = Math.floor(daysSinceStart / cycleLength);
+  const effectiveStart = addDays(start, cyclesPassed * cycleLength);
+
+  return {
+    date: format(effectiveStart, 'yyyy-MM-dd'),
+    rolledOver: true,
+    cyclesPassed,
+  };
+}
+
 export function getDaysUntilNextPeriod(
   lastPeriodStart: string,
   cycleLength: number

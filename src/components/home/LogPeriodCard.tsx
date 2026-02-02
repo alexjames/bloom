@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { format, subDays } from 'date-fns';
@@ -6,8 +6,22 @@ import { Card, Button } from '../common';
 import { theme } from '../../constants/colors';
 import { useCycleStore } from '../../store/cycleStore';
 
-export function LogPeriodCard() {
-  const [showDatePicker, setShowDatePicker] = useState(false);
+interface LogPeriodCardProps {
+  showDatePickerInitially?: boolean;
+  onDatePickerClose?: () => void;
+}
+
+export function LogPeriodCard({
+  showDatePickerInitially = false,
+  onDatePickerClose,
+}: LogPeriodCardProps) {
+  const [showDatePicker, setShowDatePicker] = useState(showDatePickerInitially);
+
+  useEffect(() => {
+    if (showDatePickerInitially) {
+      setShowDatePicker(true);
+    }
+  }, [showDatePickerInitially]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const setLastPeriodStart = useCycleStore((state) => state.setLastPeriodStart);
 
@@ -19,8 +33,13 @@ export function LogPeriodCard() {
 
   const handleDateSelect = (day: { dateString: string }) => {
     setLastPeriodStart(day.dateString);
-    setShowDatePicker(false);
+    closeDatePicker();
     showConfirmationBriefly();
+  };
+
+  const closeDatePicker = () => {
+    setShowDatePicker(false);
+    onDatePickerClose?.();
   };
 
   const showConfirmationBriefly = () => {
@@ -70,17 +89,17 @@ export function LogPeriodCard() {
         visible={showDatePicker}
         transparent
         animationType="fade"
-        onRequestClose={() => setShowDatePicker(false)}
+        onRequestClose={closeDatePicker}
       >
         <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
-          onPress={() => setShowDatePicker(false)}
+          onPress={closeDatePicker}
         >
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select period start date</Text>
-              <TouchableOpacity onPress={() => setShowDatePicker(false)}>
+              <TouchableOpacity onPress={closeDatePicker}>
                 <Text style={styles.closeButton}>✕</Text>
               </TouchableOpacity>
             </View>

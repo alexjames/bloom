@@ -3,14 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Card } from '../common';
 import { theme } from '../../constants/colors';
 import { getCurrentCycleDay, getCurrentPhase } from '../../utils/cycleCalculator';
-import { useCycleStore } from '../../store/cycleStore';
+import { useCycleStore, useEffectiveCycleStart } from '../../store/cycleStore';
 
 export function CurrentCycleCard() {
   const settings = useCycleStore((state) => state.settings);
+  const { effectiveDate } = useEffectiveCycleStart();
 
-  if (!settings.lastPeriodStart) return null;
+  if (!effectiveDate) return null;
 
-  const cycleDay = getCurrentCycleDay(settings.lastPeriodStart);
+  const cycleDay = getCurrentCycleDay(effectiveDate);
   const phase = getCurrentPhase(
     cycleDay,
     settings.averagePeriodLength,
