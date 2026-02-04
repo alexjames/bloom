@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Button } from '../../src/components/common';
 import { useCycleStore } from '../../src/store/cycleStore';
 import { theme } from '../../src/constants/colors';
@@ -39,7 +39,7 @@ export default function CompleteScreen() {
               <Text style={styles.summaryLabel}>Last period started</Text>
               <Text style={styles.summaryValue}>
                 {settings.lastPeriodStart
-                  ? format(new Date(settings.lastPeriodStart), 'MMM d, yyyy')
+                  ? format(parseISO(settings.lastPeriodStart), 'MMM d, yyyy')
                   : '-'}
               </Text>
             </View>
