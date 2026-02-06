@@ -113,8 +113,6 @@ export default function SettingsScreen() {
           >
             <Text style={styles.privacyLinkText}>Privacy Policy</Text>
           </TouchableOpacity>
-
-          <Text style={styles.version}>Bloom v1.0.0</Text>
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
