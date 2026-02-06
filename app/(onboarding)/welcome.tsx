@@ -37,12 +37,14 @@ export default function WelcomeScreen() {
           )}
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Get Started"
-            onPress={() => router.push('/(onboarding)/last-period')}
-          />
-        </View>
+        {imageLoaded && (
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Get Started"
+              onPress={() => router.push('/(onboarding)/last-period')}
+            />
+          </View>
+        )}
       </SafeAreaView>
     </LinearGradient>
   );
