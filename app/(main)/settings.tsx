@@ -96,7 +96,7 @@ export default function SettingsScreen() {
           </Card>
 
           <View style={styles.dangerZone}>
-            <Text style={styles.dangerTitle}>Danger Zone</Text>
+            <Text style={styles.dangerTitle}>Data Options</Text>
             <Button
               title="Reset All Data"
               variant="outline"

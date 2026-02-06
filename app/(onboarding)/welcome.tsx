@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,8 @@ import { Button } from '../../src/components/common';
 import { theme } from '../../src/constants/colors';
 
 export default function WelcomeScreen() {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <LinearGradient
       colors={[theme.colors.pink[50], theme.colors.pink[100]]}
@@ -13,18 +16,25 @@ export default function WelcomeScreen() {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.icon}>🌸</Text>
-          </View>
+          <Image
+            source={require('../../assets/display-page-icon.png')}
+            style={{ width: 100, height: 100 }}
+            resizeMode="contain"
+            onLoad={() => setImageLoaded(true)}
+          />
 
-          <Text style={styles.title}>Bloom</Text>
-          <Text style={styles.subtitle}>Privacy-first Period Tracker</Text>
+          {imageLoaded && (
+            <>
+              <Text style={styles.title}>Bloom</Text>
+              <Text style={styles.subtitle}>Privacy-first Period Tracker</Text>
 
-          <View style={styles.features}>
-            <FeatureItem text="Track your menstrual cycle" />
-            <FeatureItem text="Know your ovulation days" />
-            <FeatureItem text="100% private, your data is NEVER collected or shared" />
-          </View>
+              <View style={styles.features}>
+                <FeatureItem text="Track your menstrual cycle" />
+                <FeatureItem text="Know your ovulation days" />
+                <FeatureItem text="100% private, your data is NEVER collected or shared" />
+              </View>
+            </>
+          )}
         </View>
 
         <View style={styles.buttonContainer}>
