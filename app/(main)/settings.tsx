@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -6,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Alert,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -105,6 +105,14 @@ export default function SettingsScreen() {
               textStyle={styles.resetButtonText}
             />
           </View>
+
+          <TouchableOpacity
+            style={styles.privacyLink}
+            onPress={() => Linking.openURL('https://sites.google.com/view/bloomperiodtracker/privacy-policy')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.privacyLinkText}>Privacy Policy</Text>
+          </TouchableOpacity>
 
           <Text style={styles.version}>Bloom v1.0.0</Text>
         </ScrollView>
@@ -259,5 +267,15 @@ const styles = StyleSheet.create({
     color: theme.colors.neutral[400],
     textAlign: 'center',
     marginTop: theme.spacing.xl,
+  },
+  privacyLink: {
+    alignItems: 'center',
+    marginTop: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+  },
+  privacyLinkText: {
+    fontSize: theme.fontSize.sm,
+    color: theme.colors.pink[600],
+    textDecorationLine: 'underline',
   },
 });
