@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -64,6 +65,27 @@ export const useCycleStore = create<CycleState>()(
     }
   )
 );
+
+export const useHasHydrated = () => {
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  useEffect(() => {
+    const unsubFinishHydration = useCycleStore.persist.onFinishHydration(() => {
+      setHasHydrated(true);
+    });
+
+    // Check if already hydrated
+    if (useCycleStore.persist.hasHydrated()) {
+      setHasHydrated(true);
+    }
+
+    return () => {
+      unsubFinishHydration();
+    };
+  }, []);
+
+  return hasHydrated;
+};
 
 export const useIsOnboardingComplete = () =>
   useCycleStore((state) => state.settings.onboardingCompleted);

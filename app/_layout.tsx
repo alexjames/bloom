@@ -1,17 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { theme } from '../src/constants/colors';
+import { useHasHydrated } from '../src/store/cycleStore';
 
 export default function RootLayout() {
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    // Small delay to allow store hydration
-    const timer = setTimeout(() => setIsReady(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+  const isReady = useHasHydrated();
 
   if (!isReady) {
     return (
