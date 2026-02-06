@@ -2,13 +2,14 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { format, parseISO, eachDayOfInterval } from 'date-fns';
-import { useCycleStore, useEffectiveCycleStart } from '../../store/cycleStore';
+import { useCycleStore, useEffectiveCycleStart, useCurrentDate } from '../../store/cycleStore';
 import { generateCyclePredictions } from '../../utils/cycleCalculator';
 import { theme } from '../../constants/colors';
 
 export function CycleCalendar() {
   const settings = useCycleStore((state) => state.settings);
   const { effectiveDate } = useEffectiveCycleStart();
+  const currentDate = useCurrentDate();
 
   const markedDates = useMemo(() => {
     if (!effectiveDate) return {};
@@ -128,7 +129,7 @@ export function CycleCalendar() {
     });
 
     // Mark today
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = currentDate;
     if (!marks[today]?.color) {
       marks[today] = {
         ...marks[today],
@@ -138,7 +139,7 @@ export function CycleCalendar() {
     }
 
     return marks;
-  }, [effectiveDate, settings.averageCycleLength, settings.averagePeriodLength]);
+  }, [effectiveDate, settings.averageCycleLength, settings.averagePeriodLength, currentDate]);
 
   const calendarTheme = {
     backgroundColor: 'transparent',

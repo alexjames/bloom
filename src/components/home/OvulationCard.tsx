@@ -4,11 +4,12 @@ import { differenceInDays, parseISO } from 'date-fns';
 import { Card } from '../common';
 import { theme } from '../../constants/colors';
 import { generateCyclePredictions, formatDate } from '../../utils/cycleCalculator';
-import { useCycleStore, useEffectiveCycleStart } from '../../store/cycleStore';
+import { useCycleStore, useEffectiveCycleStart, useCurrentDate } from '../../store/cycleStore';
 
 export function OvulationCard() {
   const settings = useCycleStore((state) => state.settings);
   const { effectiveDate } = useEffectiveCycleStart();
+  useCurrentDate(); // Subscribe to date changes for re-render
 
   if (!effectiveDate) return null;
 

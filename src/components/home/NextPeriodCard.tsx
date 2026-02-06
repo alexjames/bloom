@@ -3,11 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Card } from '../common';
 import { theme } from '../../constants/colors';
 import { getDaysUntilNextPeriod, generateCyclePredictions, formatDate } from '../../utils/cycleCalculator';
-import { useCycleStore, useEffectiveCycleStart } from '../../store/cycleStore';
+import { useCycleStore, useEffectiveCycleStart, useCurrentDate } from '../../store/cycleStore';
 
 export function NextPeriodCard() {
   const settings = useCycleStore((state) => state.settings);
   const { effectiveDate } = useEffectiveCycleStart();
+  useCurrentDate(); // Subscribe to date changes for re-render
 
   if (!effectiveDate) return null;
 
