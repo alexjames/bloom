@@ -1,13 +1,20 @@
 import { Tabs } from 'expo-router';
 import { Text, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '../../src/constants/colors';
 
 export default function MainLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: {
+          ...styles.tabBar,
+          paddingBottom: Math.max(insets.bottom, theme.spacing.sm),
+          height: 70 + insets.bottom,
+        },
         tabBarActiveTintColor: theme.colors.pink[500],
         tabBarInactiveTintColor: theme.colors.neutral[400],
         tabBarLabelStyle: styles.tabBarLabel,
@@ -50,8 +57,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: theme.colors.neutral[100],
     paddingTop: theme.spacing.sm,
-    paddingBottom: theme.spacing.sm,
-    height: 70,
   },
   tabBarLabel: {
     fontSize: theme.fontSize.xs,
